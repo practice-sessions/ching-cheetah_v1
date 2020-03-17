@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
 
-let CalEventSchema = new mongoose.Schema({
+const EventSchema = new mongoose.Schema({
   event_description: {
     type: String
   },
   event_typeId: {
     type: Number
   },
-  event_responsible: {
-    type: String
-  },
+
   event_priority: {
-    type: String
+    type: Number,
+    default: 1
   },
   event_completed: {
     type: Boolean
@@ -30,4 +29,4 @@ let CalEventSchema = new mongoose.Schema({
   }
 });
 
-module.exports = CalEvent = mongoose.model('calevent', CalEventSchema);
+module.exports = CalEvent = mongoose.model('CalEvent', EventSchema);

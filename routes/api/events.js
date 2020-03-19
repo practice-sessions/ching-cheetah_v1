@@ -18,6 +18,9 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route GET api/events/:calendar.id
+// @desc List all events by calendar id
+
 router.get('/:calendar.id', async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -32,10 +35,34 @@ router.get('/:calendar.id', async (req, res) => {
     );
     // Make sure calendar exist
     if (!calendar) {
-      return res.status(404).json({ msg: 'No such calendar date' });
+      return res.status(404).json({ msg: 'No such calendar date for events' });
     }
     await event.save();
     res.json(event.calendars);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route POST api/events
+// @desc Create an event
+
+router.post('/add', async (req, res) => {
+  try {
+    const calendar = await Calendar.findById(req.calendar.id);
+
+    const newEvents_type = new Events_types({
+      event_description: req.body.event_description,
+      event_priority: calendar.event_priority,
+      event_completed: calendar.event_completed,
+      event_startDate: calendar.event_startDate,
+      event_endDate: calendar.event_endDate
+    });
+    event.events_types.unshift(newEvents_type);
+
+    const event = await newEvents_type.save();
+    res.json(event);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

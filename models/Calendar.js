@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const CalendarSchema = new mongoose.Schema({
-  // event: {
-  //   type: moogoose.Schema.Types.ObjectId,
-  //   ref: 'event'
-  // },
+  event: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'event'
+  },
 
   calendar_description: {
     type: String

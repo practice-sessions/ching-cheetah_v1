@@ -1,21 +1,38 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const CalendarSchema = new mongoose.Schema({
   event: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'event'
+    ref: 'events'
   },
 
-  calendar_description: {
+  calendar_name: {
     type: String
   },
-  event_types: [
+
+  events_types: [
     {
-      event_typeId: {
-        type: Number
+      event: {
+        type: Schema.Types.ObjectId,
+        ref: 'events'
       },
       event_description: {
         type: String
+      },
+
+      event_priority: {
+        type: Number,
+        default: 1
+      },
+      event_completed: {
+        type: Boolean
+      },
+      event_startDate: {
+        type: Number
+      },
+      event_endDate: {
+        type: Number
       }
     }
   ]

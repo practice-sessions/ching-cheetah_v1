@@ -4,13 +4,9 @@ const EventSchema = new mongoose.Schema({
   event_description: {
     type: String
   },
-  event_typeId: {
-    type: Number
-  },
 
   event_priority: {
-    type: Number,
-    default: 1
+    type: String
   },
   event_completed: {
     type: Boolean
@@ -20,12 +16,6 @@ const EventSchema = new mongoose.Schema({
   },
   event_endDate: {
     type: Number
-  },
-  event_startTime: {
-    type: String
-  },
-  event_endTime: {
-    type: String
   }
 });
 

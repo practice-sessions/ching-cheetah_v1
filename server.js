@@ -11,7 +11,7 @@ app.use(express.json({ extended: false }));
 
 // Define Routes
 app.use('/api/events', require('./routes/api/events'));
-app.use('/api/calendar', require('./routes/api/calendar'));
+app.use('/api/calendar', require('./routes/api/calendars'));
 
 app.listen(PORT, () => {
   console.log(`Server is live on PORT ${PORT}`);

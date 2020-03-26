@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Event = require('../../models/Event');
 const Calendar = require('../../models/Calendar');
-const mongoose = require('mongoose');
 require('date-format-lite');
 
 // @route GET api/events
@@ -18,27 +17,19 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route GET api/events/:calendar.id
-// @desc List all events by calendar id
+// @route GET api/events/:id
+// @desc Get events by ID
 
-router.get('/:calendar.id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     if (!event) {
-      return res.status(400).json({
+      return res.status(404).json({
         msg: 'Event does not exist'
       });
     }
-    //Pull out calender
-    const calendar = event.calendars.find(
-      calendar => calendar.id === req.params.calendar.id
-    );
-    // Make sure calendar exist
-    if (!calendar) {
-      return res.status(404).json({ msg: 'No such calendar date for events' });
-    }
-    await event.save();
-    res.json(event.calendars);
+
+    res.json(event);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -46,25 +37,54 @@ router.get('/:calendar.id', async (req, res) => {
 });
 
 // @route POST api/events
-// @desc Create an event
+// @desc Create an event on a calendar
 
-router.post('/add', async (req, res) => {
+router.post('/', async (req, res) => {
+  console.log(req.body);
   try {
-    const calendar = await Calendar.findById(req.calendar.id);
+    const calendar = await Calendar.findOne({ calendar: req.calendar.id });
 
-    const newEvents_type = new Events_types({
+    const newEvent = new Event({
       event_description: req.body.event_description,
-      event_priority: calendar.event_priority,
-      event_completed: calendar.event_completed,
-      event_startDate: calendar.event_startDate,
-      event_endDate: calendar.event_endDate
+      event_priority: req.body.event_priority,
+      event_completed: req.body.event_completed,
+      event_startDate: req.body.event_startDate,
+      event_endDate: req.body.event_endDate,
+      calendar: req.calendar.id
     });
-    event.events_types.unshift(newEvents_type);
 
-    const event = await newEvents_type.save();
+    const event = await newEvent.save();
     res.json(event);
   } catch (err) {
     console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route DELETE api/events/:id
+// @desc Delete event
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+
+    // Check calendar
+    if (event.calendar.toString() !== req.calendar.id) {
+      return res.status(401).json({ msg: 'Error occuied' });
+    }
+
+    await event.remove();
+
+    res.json({ msg: 'Event deleted' });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
     res.status(500).send('Server Error');
   }
 });

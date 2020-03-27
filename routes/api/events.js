@@ -32,17 +32,20 @@ router.get('/:id', async (req, res) => {
     res.json(event);
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
     res.status(500).send('Server Error');
   }
 });
 
-// @route POST api/events
+// @route POST api/events/calendar/:calendar_id
 // @desc Create an event on a calendar
 
-router.post('/', async (req, res) => {
+router.post('/calendar/:calendar_id', async (req, res) => {
   console.log(req.body);
   try {
-    const calendar = await Calendar.findOne({ calendar: req.calendar.id });
+    await await Event.findOne({ calendar: req.params.calendar_id });
 
     const newEvent = new Event({
       event_description: req.body.event_description,
@@ -50,7 +53,8 @@ router.post('/', async (req, res) => {
       event_completed: req.body.event_completed,
       event_startDate: req.body.event_startDate,
       event_endDate: req.body.event_endDate,
-      calendar: req.calendar.id
+      calendar_description: req.body.calendar_description,
+      calendar: req.params.calendar_id
     });
 
     const event = await newEvent.save();
@@ -62,24 +66,29 @@ router.post('/', async (req, res) => {
 });
 
 // @route DELETE api/events/:id
-// @desc Delete event
+// @desc Delete an event
 
 router.delete('/:id', async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id);
+    await Event.findOneAndRemove(req.params.id, (err, todo) => {
+      if (err) res.status(400).json({ msg: 'Todo not Deleted' });
+      else {
+        res.status(200).json({ msg: `Event deleted` });
+      }
+    });
 
-    if (!event) {
-      return res.status(404).json({ msg: 'Event not found' });
-    }
+    // if (!event) {
+    //   return res.status(404).json({ msg: 'Event not found' });
+    // }
 
-    // Check calendar
-    if (event.calendar.toString() !== req.calendar.id) {
-      return res.status(401).json({ msg: 'Error occuied' });
-    }
+    // // Check calendar
+    // if (event.calendar.toString() !== req.calendar.id) {
+    //   return res.status(401).json({ msg: 'Error occuied' });
+    // }
 
-    await event.remove();
+    // await event.remove();
 
-    res.json({ msg: 'Event deleted' });
+    // res.json({ msg: 'Event deleted' });
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {

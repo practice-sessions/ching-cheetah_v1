@@ -85,4 +85,32 @@ router.delete('/:event_id/:calendar_id', async (req, res) => {
   }
 });
 
+// @route PUT api/events/:event_id/:calendar_id
+// @desc Edit an event
+
+router.put('/update/:event_id/:calendar_id', async (req, res) => {
+  try {
+    await Calendar.findOne({ calendar: req.params.calendar_id });
+
+    let event = await Event.findById(req.params.event_id);
+
+    //  Make sure event exists
+    if (!event) {
+      return res.status(404).json({ msg: 'Event not found' });
+    } else event.event_description = req.body.event_description;
+    event.event_priority = req.body.event_priority;
+    event.event_completed = req.body.event_completed;
+    event.event_startDate = req.body.event_startDate;
+    event.event_endDate = req.body.event_endDate;
+    event.calendar_description = req.body.calendar_description;
+
+    event.save();
+
+    return res.json(event);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

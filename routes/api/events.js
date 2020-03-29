@@ -65,35 +65,22 @@ router.post('/calendar/:calendar_id', async (req, res) => {
   }
 });
 
-// @route DELETE api/events/:id
+// @route DELETE api/events/:event_id/:calendar_id
 // @desc Delete an event
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:event_id/:calendar_id', async (req, res) => {
   try {
-    await Event.findOneAndRemove(req.params.id, (err, todo) => {
-      if (err) res.status(400).json({ msg: 'Todo not Deleted' });
-      else {
-        res.status(200).json({ msg: `Event deleted` });
-      }
-    });
+    await Calendar.findOne({ calendar: req.params.calendar_id });
+    const event = await Event.findByIdAndRemove(req.params.event_id);
 
-    // if (!event) {
-    //   return res.status(404).json({ msg: 'Event not found' });
-    // }
-
-    // // Check calendar
-    // if (event.calendar.toString() !== req.calendar.id) {
-    //   return res.status(401).json({ msg: 'Error occuied' });
-    // }
-
-    // await event.remove();
-
-    // res.json({ msg: 'Event deleted' });
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
+    //  Make sure event exists
+    if (!event) {
       return res.status(404).json({ msg: 'Event not found' });
     }
+
+    res.json({ msg: 'Event Deleted' });
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send('Server Error');
   }
 });

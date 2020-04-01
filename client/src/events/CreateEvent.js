@@ -15,6 +15,42 @@ class CreateEvent extends Component {
     };
   }
 
+  onChangeEventDescription = e => {
+    this.setState({
+      event_description: e.target.value
+    });
+  };
+
+  onChangeEventPriority = e => {
+    this.setState({
+      event_priority: e.target.value
+    });
+  };
+
+  onChangeEventStartDate = e => {
+    this.setState({
+      event_startdate: e.target.value
+    });
+  };
+
+  onChangeEventCompleteDate = e => {
+    this.setState({
+        event_endDate: e.target.value
+    });
+  };
+
+  onSubmit = e => {
+      e.preventDefault()
+
+      console.log(`Form sumbited`)
+      console.log(`Event Description: ${this.state.event_description}`)
+      console.log(`Event Priority: ${this.state.event_priority}`)
+      console.log(`Event Startdate: ${this.state.event_startDate}`)
+      console.log(`Event Enddate: ${this.state.event_endDate}`)
+  }
+
+  
+
   render() {
     return (
       <div style={{ marginTop: 10 }}>

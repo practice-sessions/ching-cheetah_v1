@@ -21,6 +21,12 @@ class CreateEvent extends Component {
     });
   };
 
+  onChangeCalendarDescription = e => {
+    this.setState({
+      calendar_description: e.target.value
+    });
+  };
+
   onChangeEventPriority = e => {
     this.setState({
       event_priority: e.target.value
@@ -29,27 +35,48 @@ class CreateEvent extends Component {
 
   onChangeEventStartDate = e => {
     this.setState({
-      event_startdate: e.target.value
+      event_startDate: e.target.value
     });
   };
 
   onChangeEventCompleteDate = e => {
     this.setState({
-        event_endDate: e.target.value
+      event_endDate: e.target.value
     });
   };
 
   onSubmit = e => {
-      e.preventDefault()
+    e.preventDefault();
 
-      console.log(`Form sumbited`)
-      console.log(`Event Description: ${this.state.event_description}`)
-      console.log(`Event Priority: ${this.state.event_priority}`)
-      console.log(`Event Startdate: ${this.state.event_startDate}`)
-      console.log(`Event Enddate: ${this.state.event_endDate}`)
-  }
+    console.log(`Form sumbited`);
+    console.log(`Event Description: ${this.state.event_description}`);
 
-  
+    console.log(`Calendar Date: ${this.state.calendar_description}`);
+    console.log(`Event Priority: ${this.state.event_priority}`);
+    console.log(`Event Startdate: ${this.state.event_startDate}`);
+    console.log(`Event Enddate: ${this.state.event_endDate}`);
+
+    const newEvent = {
+      event_description: this.state.event_description,
+      calendar_description: this.state.calendar_description,
+      event_priority: this.state.event_priority,
+      event_startDate: this.state.event_startDate,
+      event_endDate: this.state.event_endDate
+    };
+
+    axios
+      .post('http://api/todos/add', newEvent)
+      .then(res => console.log(res.data));
+
+    this.setState({
+      event_description: '',
+      event_priority: '',
+      event_startDate: '',
+      event_endDate: '',
+      calendar_description: '',
+      event_completed: false
+    });
+  };
 
   render() {
     return (
@@ -67,14 +94,22 @@ class CreateEvent extends Component {
             />
           </div>
 
-         
+          <div className='form-group'>
+            <label>Calendar Date: </label>
+            <input
+              type='text'
+              className='form-control'
+              value={this.state.calendar_description}
+              onChange={this.onChangeCalendarDescription}
+            />
+          </div>
 
           <div className='form-group'>
             <label>Start Date: </label>
             <input
               type='date'
               className='form-control'
-              value={this.state.event_startDate:}
+              value={this.state.event_startDate}
               onChange={this.onChangeEventStartDate}
             />
           </div>

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
-export default class EditEvent extends Component {
+class EventsShow extends Component {
   render() {
     return (
       <div>
-        <h3>Edit Event</h3>
+        <h3>Events</h3>
       </div>
     );
   }
 }
+export default EventsShow;

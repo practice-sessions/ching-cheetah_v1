@@ -7,10 +7,10 @@ class CreateEvent extends Component {
 
     this.state = {
       event_description: '',
+      calendar_description: '',
       event_priority: '',
       event_startDate: '',
       event_endDate: '',
-      calendar_description: '',
       event_completed: false
     };
   }
@@ -39,7 +39,7 @@ class CreateEvent extends Component {
     });
   };
 
-  onChangeEventCompleteDate = e => {
+  onChangeEventEndDate = e => {
     this.setState({
       event_endDate: e.target.value
     });
@@ -65,7 +65,10 @@ class CreateEvent extends Component {
     };
 
     axios
-      .post('http://api/todos/add', newEvent)
+      .post(
+        'http://api/events/calendar/' + this.props.match.calendar_id,
+        newEvent
+      )
       .then(res => console.log(res.data));
 
     this.setState({

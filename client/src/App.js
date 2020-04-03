@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+// import 'react-calendar/dist/Calendar.css';
 import CreateEvent from './events/CreateEvent';
 import DeleteEvent from './events/DeleteEvent';
 import EditEvent from './events/EditEvent';
@@ -28,7 +28,7 @@ class App extends Component {
               <ul className='navbar-nav mr-auto'>
                 <li className='navbar-item'>
                   <Link to='/' className='nav-link'>
-                    Todos
+                    Events
                   </Link>
                 </li>
                 <li className='navbar-item'>
@@ -39,14 +39,16 @@ class App extends Component {
               </ul>
             </div>
           </nav>
-          <Route path='/' exact component={App} />
+
+          <div className='calendar'>
+            <Calendar onChange={this.onChange} value={this.state.date} />
+          </div>
+
+          <Route path='/' exact component={EventsDisplay} />
           <Route path='/create' component={CreateEvent} />
           <Route path='/edit/:id' component={EditEvent} />
           <Route path='/delete/id' component={DeleteEvent} />
           <Route path='/events' component={EventsDisplay} />
-          <div className='calendar'>
-            <Calendar onChange={this.onChange} value={this.state.date} />
-          </div>
         </div>
       </Router>
     );

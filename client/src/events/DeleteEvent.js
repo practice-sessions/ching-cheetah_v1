@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import axios from axios
 
-export default class DeleteEvent extends Component {
+ class DeleteEvent extends Component {
+
+   
   render() {
     return (
       <div>
@@ -9,3 +12,5 @@ export default class DeleteEvent extends Component {
     );
   }
 }
+
+export default DeleteEvent

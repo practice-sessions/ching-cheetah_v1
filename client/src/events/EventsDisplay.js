@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Event = props => (
+const Event = (props) => (
   <tr>
     <td className={props.event.event_completed ? 'completed' : ''}>
       {props.event.event_description}
@@ -34,11 +34,11 @@ class EventsDisplay extends Component {
 
   componentDidMount() {
     axios
-      .get('http://api/events')
-      .then(response => {
+      .get('http://localhost:5090/api/events')
+      .then((response) => {
         this.setState({ events: response.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -65,7 +65,7 @@ class EventsDisplay extends Component {
               <th>Delete Event</th>
             </tr>
           </thead>
-          <tboby>{this.eventsDisplay()}</tboby>
+          <tbody>{this.eventsDisplay()}</tbody>
         </table>
       </div>
     );

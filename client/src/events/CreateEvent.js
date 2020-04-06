@@ -45,6 +45,12 @@ class CreateEvent extends Component {
     });
   };
 
+  onChangeEventCompleted = e => {
+    this.setState({
+      event_completed: !this.state.event_completed
+    });
+  };
+
   onSubmit = e => {
     e.preventDefault();
 

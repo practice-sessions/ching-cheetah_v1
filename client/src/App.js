@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
+import 'react-calendar/dist/Calendar.css';
 import CreateEvent from './events/CreateEvent';
 import DeleteEvent from './events/DeleteEvent';
 import EditEvent from './events/EditEvent';
@@ -11,10 +11,13 @@ import EventsDisplay from './events/EventsDisplay';
 
 class App extends Component {
   state = {
-    date: new Date()
+    date: new Date(),
+    calendar_description: '',
   };
 
-  onChange = date => this.setState({ date });
+  onChange = (date) => this.setState({ date });
+  onClickDay = (calendar_description) =>
+    this.setState({ calendar_description });
 
   render() {
     return (
@@ -41,7 +44,12 @@ class App extends Component {
           </nav>
 
           <div className='calendar'>
-            <Calendar onChange={this.onChange} value={this.state.date} />
+            <Calendar
+              onChange={this.onChange}
+              onClickDay={this.onClickDay}
+              clickDay={this.state.calendar_description}
+              value={this.state.date}
+            />
           </div>
 
           <Route path='/' exact component={EventsDisplay} />

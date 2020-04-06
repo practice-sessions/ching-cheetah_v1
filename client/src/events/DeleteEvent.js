@@ -13,6 +13,21 @@ class DeleteEvent extends Component {
     };
   }
 
+  componentDidMount() {
+    axios
+      .get('http://api/events/' + this.props.match.event_id)
+      .then(response => {
+        this.setState({
+          event_decription: response.data.event_decription,
+          calendar_description: response.data.calendar_description,
+          event_priority: response.data.event_priority
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   onChangeCalendarDescription = e => {
     this.setState({ event_decription: e.target.value });
   };

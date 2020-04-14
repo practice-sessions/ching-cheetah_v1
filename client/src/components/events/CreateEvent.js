@@ -63,15 +63,17 @@ class CreateEvent extends Component {
 
     const newEvent = {
       event_description: this.state.event_description,
-      calendar_description: this.state.calendar_description,
       event_priority: this.state.event_priority,
+      calendar_description: this.state.calendar_description,
+      event_completed: this.state.event_completed,
       event_startDate: this.state.event_startDate,
       event_endDate: this.state.event_endDate,
     };
 
     axios
       .post(
-        'http://api/events/calendar/' + this.props.match.param.calendar_id,
+        'http://localhost:4020/api/events/calendar/' +
+          this.props.match.params.calendar_id,
         newEvent
       )
       .then((res) => console.log(res.data));

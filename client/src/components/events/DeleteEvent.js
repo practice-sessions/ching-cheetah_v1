@@ -9,56 +9,56 @@ class DeleteEvent extends Component {
       event_decription: '',
       calendar_description: '',
       event_priority: '',
-      event_completed: false
+      event_completed: false,
     };
   }
 
   componentDidMount() {
     axios
       .get('http://api/events/' + this.props.match.event_id)
-      .then(response => {
+      .then((response) => {
         this.setState({
           event_decription: response.data.event_decription,
           calendar_description: response.data.calendar_description,
-          event_priority: response.data.event_priority
+          event_priority: response.data.event_priority,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
 
-  onChangeCalendarDescription = e => {
+  onChangeCalendarDescription = (e) => {
     this.setState({ event_decription: e.target.value });
   };
 
-  onChangeCalendarDescription = e => {
+  onChangeCalendarDescription = (e) => {
     this.setState({ calendar_description: e.target.value });
   };
 
-  onChangeEventPriority = e => {
+  onChangeEventPriority = (e) => {
     this.setState({ event_priority: e.target.value });
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     const obj = {
       event_decription: this.state.event_decription,
       calendar_description: this.state.calendar_description,
-      event_priority: this.state.event_priority
+      event_priority: this.state.event_priority,
     };
 
     console.log(obj);
 
     axios
       .delete(
-        'http://api/events/delete/' +
+        'http://localhost:4020/api/events/delete/' +
           this.props.match.event_id +
           this.props.match.calendar_id,
         obj
       )
-      .then(res => console.log(res.data));
+      .then((res) => console.log(res.data));
     this.props.history.push('/');
   };
 

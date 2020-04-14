@@ -11,47 +11,47 @@ class EditEvent extends Component {
       event_priority: '',
       event_startDate: '',
       event_endDate: '',
-      event_completed: false
+      event_completed: false,
     };
   }
 
-  onChangeEventDescription = e => {
+  onChangeEventDescription = (e) => {
     this.setState({
-      event_description: e.target.value
+      event_description: e.target.value,
     });
   };
 
-  onChangeCalendarDescription = e => {
+  onChangeCalendarDescription = (e) => {
     this.setState({
-      calendar_description: e.target.value
+      calendar_description: e.target.value,
     });
   };
 
-  onChangeEventPriority = e => {
+  onChangeEventPriority = (e) => {
     this.setState({
-      event_priority: e.target.value
+      event_priority: e.target.value,
     });
   };
 
-  onChangeEventStartDate = e => {
+  onChangeEventStartDate = (e) => {
     this.setState({
-      event_startDate: e.target.value
+      event_startDate: e.target.value,
     });
   };
 
-  onChangeEventEndDate = e => {
+  onChangeEventEndDate = (e) => {
     this.setState({
-      event_endDate: e.target.value
+      event_endDate: e.target.value,
     });
   };
 
-  onChangeEventCompleted = e => {
+  onChangeEventCompleted = (e) => {
     this.setState({
-      event_completed: !this.state.event_completed
+      event_completed: !this.state.event_completed,
     });
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     const obj = {
@@ -60,19 +60,19 @@ class EditEvent extends Component {
       event_startDate: this.state.event_startDate,
       event_endDate: this.state.event_endDate,
       event_priority: this.state.event_priority,
-      event_completed: this.state.event_completed
+      event_completed: this.state.event_completed,
     };
 
     console.log(obj);
 
     axios
       .post(
-        'http://api/events/update/' +
+        'http://localhost:4020/api/events/update/' +
           this.props.match.event_id +
           this.props.match.calendar_id,
         obj
       )
-      .then(res => console.log(res.data));
+      .then((res) => console.log(res.data));
     this.props.history.push('/');
   };
 

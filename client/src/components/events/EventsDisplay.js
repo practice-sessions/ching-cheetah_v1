@@ -8,13 +8,17 @@ const Event = (props) => (
       {props.event.event_description}
     </td>
     <td className={props.event.event_completed ? 'completed' : ''}>
-      {props.event.event_priority}
+      {props.event.calendar_description}
     </td>
+
     <td className={props.event.event_completed ? 'completed' : ''}>
       {props.event.event_startDate}
     </td>
     <td className={props.event.event_completed ? 'completed' : ''}>
       {props.event.event_endDate}
+    </td>
+    <td className={props.event.event_completed ? 'completed' : ''}>
+      {props.event.event_priority}
     </td>
     <td>
       <Link to={'/update/' + props.event_id + props.calendar_id}>Edit</Link>
@@ -33,12 +37,14 @@ class EventsDisplay extends Component {
   }
 
   async componentDidMount() {
-    const response = await axios.get('http://api/events');
-
-    this.setState({ events: response.data })
-    .catch((error) => {
-      console.log(error);
-    });
+    axios
+      .get('http://localhost:4020/api/events')
+      .then((response) => {
+        this.setState({ events: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   eventsDisplay() {
@@ -57,7 +63,7 @@ class EventsDisplay extends Component {
               <th>Description</th>
               <th>Calendar Date</th>
               <th>Start Date</th>
-              <th>Completion Date</th>
+              <th>Completed Date</th>
               <th>Priority</th>
               <th>Edit Event</th>
               <th>Delete Event</th>

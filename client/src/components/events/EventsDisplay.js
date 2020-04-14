@@ -32,15 +32,13 @@ class EventsDisplay extends Component {
     this.state = { events: [] };
   }
 
-  componentDidMount() {
-    axios
-      .get('http://localhost:5090/api/events')
-      .then((response) => {
-        this.setState({ events: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async componentDidMount() {
+    const response = await axios.get('http://api/events');
+
+    this.setState({ events: response.data })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   eventsDisplay() {

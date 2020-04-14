@@ -71,7 +71,7 @@ class CreateEvent extends Component {
 
     axios
       .post(
-        'http://api/events/calendar/' + this.props.match.calendar_id,
+        'http://api/events/calendar/' + this.props.match.param.calendar_id,
         newEvent
       )
       .then((res) => console.log(res.data));

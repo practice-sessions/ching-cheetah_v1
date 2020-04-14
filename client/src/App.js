@@ -4,20 +4,21 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import CreateEvent from './events/CreateEvent';
-import DeleteEvent from './events/DeleteEvent';
-import EditEvent from './events/EditEvent';
-import EventsDisplay from './events/EventsDisplay';
+import CreateEvent from './components/events/CreateEvent';
+import DeleteEvent from './components/events/DeleteEvent';
+import EditEvent from './components/events/EditEvent';
+import EventsDisplay from './components/events/EventsDisplay';
 
 class App extends Component {
   state = {
     date: new Date(),
     calendar_description: '',
+    clickDay: false,
   };
 
   onChange = (date) => this.setState({ date });
   onClickDay = (calendar_description) =>
-    this.setState({ calendar_description });
+    this.setState({ calendar_description, clickDay: true });
 
   render() {
     return (
@@ -31,18 +32,23 @@ class App extends Component {
               <ul className='navbar-nav mr-auto'>
                 <li className='navbar-item'>
                   <Link to='/' className='nav-link'>
-                    Events
+                    Calendar
                   </Link>
                 </li>
                 <li className='navbar-item'>
-                  <Link to='/create' className='nav-link'>
-                    Create Events
+                  <Link to='/events' className='nav-link'>
+                    Events
                   </Link>
                 </li>
               </ul>
             </div>
           </nav>
+          <br />
 
+          <h6 style={{ color: 'red' }}>
+            Click on a calendar date to create an event
+          </h6>
+          <br />
           <div className='calendar'>
             <Calendar
               onChange={this.onChange}
@@ -51,9 +57,9 @@ class App extends Component {
               value={this.state.date}
             />
           </div>
+          <div>{this.state.clickDay && <CreateEvent />}</div>
 
-          <Route path='/' exact component={EventsDisplay} />
-          <Route path='/create' component={CreateEvent} />
+          {/* <Route path='/' exact component={Calendar} /> */}
           <Route path='/edit/:id' component={EditEvent} />
           <Route path='/delete/id' component={DeleteEvent} />
           <Route path='/events' component={EventsDisplay} />

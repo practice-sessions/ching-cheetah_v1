@@ -41,6 +41,7 @@ class EventsDisplay extends Component {
       .get('http://localhost:4020/api/events')
       .then((response) => {
         this.setState({ events: response.data });
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);

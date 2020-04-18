@@ -9,7 +9,7 @@ require('date-format-lite');
 
 router.get('/', async (req, res) => {
   try {
-    const events = await Event.find().sort({ date: -1 });
+    const events = await Event.find();
     res.json(events);
   } catch (err) {
     console.error(err.message);
@@ -22,10 +22,12 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
+    let id = req.params.id;
+    console.log(id);
     const event = await Event.findById(req.params.id);
     if (!event) {
       return res.status(404).json({
-        msg: 'Event does not exist'
+        msg: 'Event does not exist',
       });
     }
 
@@ -39,13 +41,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// @route POST api/events/calendar/:calendar_id
+// @route POST api/events/calendar/add/:cal_id
 // @desc Create an event on a calendar
 
-router.post('/calendar/:calendar_id', async (req, res) => {
-  console.log(req.body);
+router.post('/calendar/add/:cal_id', async (req, res) => {
   try {
-    await await Event.findOne({ calendar: req.params.calendar_id });
+    let cal_id = req.params.id;
+    await Event.findById(cal_id);
 
     const newEvent = new Event({
       event_description: req.body.event_description,
@@ -54,7 +56,6 @@ router.post('/calendar/:calendar_id', async (req, res) => {
       event_startDate: req.body.event_startDate,
       event_endDate: req.body.event_endDate,
       calendar_description: req.body.calendar_description,
-      calendar: req.params.calendar_id
     });
 
     const event = await newEvent.save();
@@ -65,34 +66,38 @@ router.post('/calendar/:calendar_id', async (req, res) => {
   }
 });
 
-// @route DELETE api/events/:event_id/:calendar_id
+// @route DELETE api/events/delete/:id
 // @desc Delete an event
 
-router.delete('/:event_id/:calendar_id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    await Calendar.findOne({ calendar: req.params.calendar_id });
-    const event = await Event.findByIdAndRemove(req.params.event_id);
+    const event = await Event.findById(req.params.id);
 
     //  Make sure event exists
     if (!event) {
       return res.status(404).json({ msg: 'Event not found' });
     }
 
+    await event.remove();
+
     res.json({ msg: 'Event Deleted' });
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
     res.status(500).send('Server Error');
   }
 });
 
-// @route PUT api/events/:event_id/:calendar_id
+// @route PUT api/events/update/:id/:cal_id
 // @desc Edit an event
 
-router.put('/update/:event_id/:calendar_id', async (req, res) => {
+router.put('/update/:id/:cal_id', async (req, res) => {
   try {
-    await Calendar.findOne({ calendar: req.params.calendar_id });
+    await Calendar.findOne({ calendar: req.params.cal_id });
 
-    let event = await Event.findById(req.params.event_id);
+    let event = await Event.findById(req.params.id);
 
     //  Make sure event exists
     if (!event) {

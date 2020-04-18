@@ -1,31 +1,30 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const EventSchema = new Schema({
+const EventSchema = new mongoose.Schema({
   calendar: {
-    type: Schema.Types.ObjectId,
-    ref: 'calendars'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'calendar',
   },
   event_description: {
-    type: String
+    type: String,
   },
 
   event_priority: {
-    type: String
+    type: String,
   },
   event_completed: {
-    type: Boolean
+    type: Boolean,
   },
   event_startDate: {
-    type: Date
+    type: Date,
   },
   event_endDate: {
-    type: Date
+    type: Date,
   },
 
   calendar_description: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 module.exports = Event = mongoose.model('event', EventSchema);

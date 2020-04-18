@@ -15,7 +15,7 @@ class DeleteEvent extends Component {
 
   componentDidMount() {
     axios
-      .get('http://api/events/' + this.props.match.event_id)
+      .get('http://localhost:4020/api/events/' + this.props.match.params.id)
       .then((response) => {
         this.setState({
           event_decription: response.data.event_decription,
@@ -53,8 +53,8 @@ class DeleteEvent extends Component {
 
     axios
       .delete(
-        'http://localhost:4020/api/events/delete/' +
-          this.props.match.event_id +
+        'http://localhost:4020/api/events/delete' +
+          this.props.match.id +
           this.props.match.calendar_id,
         obj
       )

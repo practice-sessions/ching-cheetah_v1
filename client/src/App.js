@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import './App.css';
+// import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -13,12 +13,13 @@ class App extends Component {
   state = {
     date: new Date(),
     calendar_description: '',
+    calendar_id: '',
     clickDay: false,
   };
 
   onChange = (date) => this.setState({ date });
-  onClickDay = (calendar_description) =>
-    this.setState({ calendar_description, clickDay: true });
+  onClickDay = (calendar_description, calendar_id) =>
+    this.setState({ calendar_description, calendar_id, clickDay: true });
 
   render() {
     return (
@@ -57,11 +58,16 @@ class App extends Component {
               value={this.state.date}
             />
           </div>
-          <div>{this.state.clickDay && <CreateEvent />}</div>
+          <div>
+            {this.state.clickDay && (
+              <CreateEvent key={this.state.calendar_description} />
+            )}
+          </div>
 
           {/* <Route path='/' exact component={Calendar} /> */}
-          <Route path='/edit/:id' component={EditEvent} />
-          <Route path='/delete/id' component={DeleteEvent} />
+          <Route path='/update/:event_id/' component={EditEvent} />
+          <Route path='/add/:id' component={CreateEvent} />
+          <Route path='/delete/:id/:calendar_id' component={DeleteEvent} />
           <Route path='/events' component={EventsDisplay} />
         </div>
       </Router>

@@ -3,24 +3,6 @@ const router = express.Router();
 const Calendar = require('../../models/Calendar');
 const Event = require('../../models/Event');
 
-// @route POST api/calendar
-// @dec Create calendar
-
-router.post('/add', async (req, res) => {
-  console.log(req.body);
-  try {
-    const newCalendar = new Calendar({
-      calendar_description: req.body.calendar_description
-    });
-
-    const calendar = await newCalendar.save();
-    res.json(calendar);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
 // @route GET api/calendar
 // @dec Get all calendar
 
@@ -34,12 +16,31 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route POST api/calendar
+// @dec Create calendar
+
+router.post('/add', async (req, res) => {
+  console.log(req.body);
+  try {
+    const newCalendar = new Calendar({
+      calendar_description: req.body.calendar_description,
+    });
+
+    const calendar = await newCalendar.save();
+    res.json(calendar);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route GET api/calendar/:id
 // @dec Find calendar by id
 
 router.get('/:id', async (req, res) => {
+  let id = req.params.id;
   try {
-    const calendar = await Calendar.findById(req.params.id);
+    const calendar = await Calendar.findById(id);
 
     if (!calendar) {
       return res.status(404).json({ msg: 'Calendar not found' });

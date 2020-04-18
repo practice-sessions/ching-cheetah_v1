@@ -15,6 +15,24 @@ class EditEvent extends Component {
     };
   }
 
+  componentDidMount() {
+    axios
+      .get('http://localhost:4020/api/events' + this.props.match.params.id)
+      .then((response) => {
+        this.setState({
+          event_decription: response.data.event_decription,
+          calendar_description: response.data.calendar_description,
+          event_priority: response.data.event_priority,
+          event_startDate: response.data.event_startDate,
+          event_endDate: response.data.event_endDate,
+          event_completed: response.data.event_completed,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   onChangeEventDescription = (e) => {
     this.setState({
       event_description: e.target.value,

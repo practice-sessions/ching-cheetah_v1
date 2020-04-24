@@ -71,11 +71,7 @@ class CreateEvent extends Component {
     };
 
     axios
-      .post(
-        'http://localhost:4020/api/events/add/' +
-          this.props.match.params.calendar_id,
-        newEvent
-      )
+      .post('http://localhost:4020/api/events/add', newEvent)
       .then((res) => console.log(res.data));
 
     this.setState({
@@ -86,8 +82,6 @@ class CreateEvent extends Component {
       calendar_description: '',
       event_completed: false,
     });
-
-    console.log(`calendar.id: ${this.props.calendar_id}`);
   };
 
   render() {

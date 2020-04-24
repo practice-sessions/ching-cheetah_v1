@@ -6,7 +6,7 @@ class DeleteEvent extends Component {
     super(props);
 
     this.state = {
-      event_decription: '',
+      event_description: '',
       calendar_description: '',
       event_priority: '',
       event_completed: false,
@@ -15,10 +15,12 @@ class DeleteEvent extends Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:4020/api/events/' + this.props.match.params.id)
+      .get(
+        'http://localhost:4020/api/events/delete/' + this.props.match.params.id
+      )
       .then((response) => {
         this.setState({
-          event_decription: response.data.event_decription,
+          event_description: response.data.event_description,
           calendar_description: response.data.calendar_description,
           event_priority: response.data.event_priority,
         });
@@ -28,8 +30,8 @@ class DeleteEvent extends Component {
       });
   }
 
-  onChangeCalendarDescription = (e) => {
-    this.setState({ event_decription: e.target.value });
+  onChangeEventDecription = (e) => {
+    this.setState({ event_description: e.target.value });
   };
 
   onChangeCalendarDescription = (e) => {
@@ -44,7 +46,7 @@ class DeleteEvent extends Component {
     e.preventDefault();
 
     const obj = {
-      event_decription: this.state.event_decription,
+      event_description: this.state.event_description,
       calendar_description: this.state.calendar_description,
       event_priority: this.state.event_priority,
     };
@@ -53,9 +55,7 @@ class DeleteEvent extends Component {
 
     axios
       .delete(
-        'http://localhost:4020/api/events/delete' +
-          this.props.match.id +
-          this.props.match.calendar_id,
+        'http://localhost:4020/api/events/' + this.props.match.params.id,
         obj
       )
       .then((res) => console.log(res.data));
@@ -69,17 +69,17 @@ class DeleteEvent extends Component {
         <form onSubmit={this.onSubmit}>
           <div className='form-group'>
             <label>Description:</label>
-            <imput
+            <input
               type='text'
               className='form-control'
-              value={this.state.event_decription}
+              value={this.state.event_description}
               onChange={this.onChangeEventDecription}
             />
           </div>
 
           <div className='form-group'>
             <label>Calendar Date:</label>
-            <imput
+            <input
               type='text'
               className='form-control'
               value={this.state.calendar_description}
@@ -89,7 +89,7 @@ class DeleteEvent extends Component {
 
           <div className='form-group'>
             <div className='form-check form-check-inline'>
-              <imput
+              <input
                 className='form-check-imput'
                 type='radio'
                 name='priorityOptions'
@@ -102,7 +102,7 @@ class DeleteEvent extends Component {
             </div>
 
             <div className='form-check form-check-inline'>
-              <imput
+              <input
                 className='form-check-input'
                 type='radio'
                 name='prioriyOptions'
@@ -114,7 +114,7 @@ class DeleteEvent extends Component {
               <label className='form-check-label'>Medium</label>
             </div>
             <div className='form-check form-check-inline'>
-              <imput
+              <input
                 className='form-check-input'
                 type='radio'
                 name='priorityOptions'

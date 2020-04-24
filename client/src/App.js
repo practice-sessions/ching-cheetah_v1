@@ -50,25 +50,32 @@ class App extends Component {
             Click on a calendar date to create an event
           </h6>
           <br />
-          <div className='calendar'>
-            <Calendar
-              onChange={this.onChange}
-              onClickDay={this.onClickDay}
-              clickDay={this.state.calendar_description}
-              value={this.state.date}
-            />
-          </div>
-          <div>
-            {this.state.clickDay && (
-              <CreateEvent key={this.state.calendar_description} />
-            )}
-          </div>
 
-          {/* <Route path='/' exact component={Calendar} /> */}
-          <Route path='/update/:event_id/' component={EditEvent} />
-          <Route path='/add/:id' component={CreateEvent} />
-          <Route path='/delete/:id/:calendar_id' component={DeleteEvent} />
+          <Route
+            exact
+            path='/'
+            render={(props) => (
+              <React.Fragment>
+                <div className='calendar'>
+                  <Calendar
+                    onChange={this.onChange}
+                    onClickDay={this.onClickDay}
+                    clickDay={this.state.calendar_description}
+                    value={this.state.date}
+                  />
+                </div>
+                <div>
+                  {this.state.clickDay && (
+                    <CreateEvent key={this.state.calendar_description} />
+                  )}
+                </div>
+              </React.Fragment>
+            )}
+          />
           <Route path='/events' component={EventsDisplay} />
+          <Route path='/update/:id/' component={EditEvent} />
+          <Route path='/add' component={CreateEvent} />
+          <Route path='/delete/:id' component={DeleteEvent} />
         </div>
       </Router>
     );

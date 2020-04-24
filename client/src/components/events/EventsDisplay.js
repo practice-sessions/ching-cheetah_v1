@@ -21,11 +21,11 @@ const Event = (props) => (
       {props.event.event_priority}
     </td>
     <td>
-      <Link to={'/update/' + props.event_id + props.calendar_id}>Edit</Link>
+      <Link to={'/update/' + props.event._id}>Edit</Link>
     </td>
 
     <td>
-      <Link to={'/delete/' + props.event_id + props.calendar_id}>Delete</Link>
+      <Link to={'/delete/' + props.event._id}>Delete</Link>
     </td>
   </tr>
 );
@@ -35,10 +35,9 @@ class EventsDisplay extends Component {
     super(props);
     this.state = { events: [] };
   }
-
-  async componentDidMount() {
+  componentDidMount() {
     axios
-      .get('http://localhost:4020/api/events')
+      .get('http://localhost:4020/api/events/events')
       .then((response) => {
         this.setState({ events: response.data });
         console.log(response.data);

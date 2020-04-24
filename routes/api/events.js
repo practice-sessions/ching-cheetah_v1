@@ -7,7 +7,7 @@ require('date-format-lite');
 // @route GET api/events
 // @desc List all events
 
-router.get('/', async (req, res) => {
+router.get('/events', async (req, res) => {
   try {
     const events = await Event.find();
     res.json(events);
@@ -41,10 +41,34 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// @route DELETE api/events/:id
+// @desc Delete an event
+
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    //  Make sure event exists
+    if (!event) {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+
+    await event.remove();
+
+    res.json({ msg: 'Event Deleted' });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route POST api/events/calendar/add/:cal_id
 // @desc Create an event on a calendar
 
-router.post('/calendar/add/:cal_id', async (req, res) => {
+router.post('/calendar/add', async (req, res) => {
   try {
     let cal_id = req.params.id;
     await Event.findById(cal_id);
@@ -66,34 +90,10 @@ router.post('/calendar/add/:cal_id', async (req, res) => {
   }
 });
 
-// @route DELETE api/events/delete/:id
-// @desc Delete an event
-
-router.delete('/:id', async (req, res) => {
-  try {
-    const event = await Event.findById(req.params.id);
-
-    //  Make sure event exists
-    if (!event) {
-      return res.status(404).json({ msg: 'Event not found' });
-    }
-
-    await event.remove();
-
-    res.json({ msg: 'Event Deleted' });
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Event not found' });
-    }
-    res.status(500).send('Server Error');
-  }
-});
-
 // @route PUT api/events/update/:id/:cal_id
 // @desc Edit an event
 
-router.put('/update/:id/:cal_id', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
   try {
     await Calendar.findOne({ calendar: req.params.cal_id });
 

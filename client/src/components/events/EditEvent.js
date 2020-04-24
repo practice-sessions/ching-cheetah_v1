@@ -85,9 +85,8 @@ class EditEvent extends Component {
 
     axios
       .post(
-        'http://localhost:4020/api/events/update/' +
-          this.props.match.event_id +
-          this.props.match.calendar_id,
+        'http://localhost:4020/api/events/update/' + this.props.match.params.id,
+
         obj
       )
       .then((res) => console.log(res.data));
@@ -98,7 +97,7 @@ class EditEvent extends Component {
     return (
       <div>
         <h3 align='center'>Edit Event</h3>
-        <form>
+        <form onSubmit={this.onSubmit}>
           <div className='form-group'>
             <label>Description:</label>
             <input
@@ -111,11 +110,11 @@ class EditEvent extends Component {
 
           <div className='form-group'>
             <label>Calendar Date</label>
-            <imput
+            <input
               type='text'
               className='form-control'
               value={this.state.calendar_description}
-              onChange={this.onChangeCalendarDescrption}
+              onChange={this.onChangeCalendarDescription}
             />
           </div>
           <div className='form-group'>
@@ -176,6 +175,21 @@ class EditEvent extends Component {
               />
               <label className='form-check-label'>High</label>
             </div>
+          </div>
+
+          <div className='form-check'>
+            <input
+              className='form-check-input'
+              id='completedCheckbox'
+              type='checkbox'
+              name='completedCheckbox'
+              onChange={this.onChangeEventCompleted}
+              checked={this.state.event_completed}
+              value={this.state.event_completed}
+            />
+            <label className='form-check-label' htmlFor='completedCheckbox'>
+              Completed
+            </label>
           </div>
 
           <div className='form-group'>
